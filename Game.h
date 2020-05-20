@@ -9,6 +9,7 @@ using namespace std;
 
 #ifndef GAME
 #define GAME
+#define MAX_TURN 20
 #define PLAYERS 2
 #define REWARD 3
 #define PENALTY 3
@@ -20,6 +21,7 @@ private:
 	Player* players[PLAYERS];
 
 	int playersTurn = 0;
+	int totalTurns = 1;
 	bool isGameover = false;
 
 	void Updated();
@@ -28,7 +30,7 @@ private:
 	void Move();
 	void CheckGameOver();
 	void Continue();
-	void WhoPlayerIsPlaying();
+	void CheckPlayersTurns();
 public:
 	Game();
 	~Game();

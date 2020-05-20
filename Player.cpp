@@ -2,11 +2,13 @@
 
 Player::Player() { 
 	name = "???"; 
+	prevPos = 1;
 	pos = 1; 
 }
 
 Player::Player(string _name) {
 	name = _name; 
+	prevPos = 1;
 	pos = 1;
 }
 
@@ -21,7 +23,6 @@ int Player::getPrevPos() { return prevPos; }
 void Player::setPos(int _pos) { 
 	prevPos = pos;
 	pos = _pos;
-	
-	if (pos < 1)
-		pos = 1;
+
+	if (pos < 1) { pos = 1; }
 }

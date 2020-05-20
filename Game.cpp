@@ -2,6 +2,7 @@
 
 Game::Game() {
 	playersTurn = 0;
+	totalTurns = 1;
 	isGameover = false;
 
 	for (int i = 0; i < PLAYERS; i++) {
@@ -20,20 +21,25 @@ void Game::Start() {
 }
 
 void Game::Updated() {
-	while (!isGameover) {
-		cout << "Is the turn of " + players[playersTurn]->getName() << endl;
+	while (!isGameover && totalTurns <= MAX_TURN) {
+		cout << "There are only #" + to_string(MAX_TURN) + " turns" << endl;
+		cout << "Turn #" + to_string(totalTurns) << endl;
+		cout << "Is the turn of Player #" + to_string(playersTurn+1) + " " + players[playersTurn]->getName() << endl;
 		Move();
 		board->setPlayer(players[playersTurn]->getPrevPos(), players[playersTurn]->getPos() - 1, to_string(playersTurn + 1));
 		cout << board->toString() << endl;
 		CheckGameOver();
-		WhoPlayerIsPlaying();
+		CheckPlayersTurns();
 		system("CLS");
 	}
 }
 
 void Game::Close() {
 	cout << "GAMEOVER!" << endl;
-	cout << players[playersTurn]->getName() + " is the winner!" << endl;
+	if (totalTurns >= MAX_TURN)
+		cout << "The  maximum  number  of  turns has  been reached..." << endl;
+	else 
+		cout << players[playersTurn]->getName() + " is the winner!" << endl;
 	system("PAUSE");
 }
 
@@ -46,22 +52,18 @@ void Game::Move() {
 	
 	if (tempPosPlayer >= TILES) {
 		tempPosPlayer = TILES;
-		players[playersTurn]->setPos(tempPosPlayer); 
 	}
 	else {
 		if (board->getTile(tempPosPlayer) == "S") {
-			players[playersTurn]->setPos(tempPosPlayer - PENALTY);
+			tempPosPlayer -= PENALTY;
 			cout << "You found a snake, you return " + to_string(PENALTY) + " squares" << endl;
 		}
 		else if (board->getTile(tempPosPlayer) == "L") {
-			players[playersTurn]->setPos(tempPosPlayer + REWARD);
+			tempPosPlayer += REWARD;
 			cout << "You found a ladder, you advance " + to_string(REWARD) + " boxes" << endl;
 		}
-		else { 	
-			players[playersTurn]->setPos(tempPosPlayer); 
-		}
 	}
-
+	players[playersTurn]->setPos(tempPosPlayer); 
 	cout << "Player new box: " + to_string(players[playersTurn]->getPos()) << endl;
 }
 
@@ -82,11 +84,11 @@ void Game::Continue() {
 	} while (temp != "C");
 }
 
-void Game::WhoPlayerIsPlaying() {
-	if (players[playersTurn]->getPos() < TILES) {
+void Game::CheckPlayersTurns() {
+	totalTurns++;
+	if (players[playersTurn]->getPos() < TILES)
 		if (playersTurn >= PLAYERS - 1)
 			playersTurn = 0;
 		else
 			playersTurn++;
-	}
 }

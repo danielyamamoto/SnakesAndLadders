@@ -12,4 +12,6 @@ int main() {
 	cout << "WELCOME TO SNAKES AND LADDERS GAME" << endl;
 	Game* g = new Game();
 	g->Start();
+	cout << "Thanks for playing!!!" << endl;
+	return 0;
 }

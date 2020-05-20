@@ -14,9 +14,9 @@ Board::Board() {
 	}
 
 	for (int l = 1; l <= LADDERS; l++) {
-		int ladderRandom = rand() % TILES;
+		int ladderRandom = rand() % (TILES-3);
 		do {
-			ladderRandom = rand() % TILES;
+			ladderRandom = rand() % (TILES-3);
 		} while (tiles[ladderRandom]->getType() == "L" && tiles[ladderRandom]->getType() == "S");
 		tiles[ladderRandom]->setType("L");
 	}
