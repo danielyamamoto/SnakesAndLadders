@@ -10,7 +10,6 @@ Game::Game(int _nTiles, int _nSnakes, int _nLadders, int _penalty, int _reward, 
 	gameType = _gameType;
 
 	playersTurn = 0;
-	totalTurns = 1;
 	isGameover = false;
 
 	for (int i = 0; i < nPlayers; i++) {
@@ -31,13 +30,13 @@ void Game::Start() {
 void Game::Updated() {
 	if (gameType == "A") {
 		cout << "The simulation will run automatically" << endl;
-		while (!isGameover && totalTurns <= maxTurns) {
+		while (!isGameover && turn->getTotalTurns() <= maxTurns) {
 			cout << "There are only #" + to_string(maxTurns) + " turns" << endl;
-			cout << "Turn #" + to_string(totalTurns) << endl;
+			cout << turn;
 			cout << "Is the turn of Player #" + to_string(playersTurn+1) + " " + players[playersTurn]->getName() << endl;
 			Move();
 			board->setPlayer(players[playersTurn]->getPrevPos() - 1, players[playersTurn]->getPos() - 1, to_string(playersTurn + 1));
-			cout << board->toString() << endl;
+			board->toString();
 			CheckGameOver();
 			CheckPlayersTurns();
 			system("CLS");
@@ -46,11 +45,11 @@ void Game::Updated() {
 	else {
 		cout << "The simulation will run manually " << endl;
 		while (!isGameover) {
-			cout << "Turn #" + to_string(totalTurns) << endl;
+			cout << turn;
 			cout << "Is the turn of Player #" + to_string(playersTurn + 1) + " " + players[playersTurn]->getName() << endl;
 			Move();
 			board->setPlayer(players[playersTurn]->getPrevPos() - 1, players[playersTurn]->getPos() - 1, to_string(playersTurn + 1));
-			cout << board->toString() << endl;
+			board->toString();
 			CheckGameOver();
 			CheckPlayersTurns();
 			system("CLS");
@@ -60,7 +59,7 @@ void Game::Updated() {
 
 void Game::Close() {
 	cout << "GAMEOVER!" << endl;
-	if (totalTurns >= maxTurns && gameType == "A")
+	if (turn->getTotalTurns() >= maxTurns && gameType == "A")
 		cout << "The  maximum  number  of  turns has  been reached..." << endl;
 	else 
 		cout << players[playersTurn]->getName() + " is the winner!" << endl;
@@ -102,14 +101,14 @@ void Game::Continue() {
 	string temp;
 	do {
 		cout << "Press C to continue next turn or E to end the game: " << endl;
-		getline(cin, temp);
+		cin >> temp;
 		if (temp == "E")
 			exit(0);
 	} while (temp != "C");
 }
 
 void Game::CheckPlayersTurns() {
-	totalTurns++;
+	turn->AddTurn();
 	if (players[playersTurn]->getPos() < board->getNumberTiles())
 		if (playersTurn >= nPlayers - 1)
 			playersTurn = 0;

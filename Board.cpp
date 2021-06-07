@@ -23,17 +23,12 @@ Board::Board(int _tiles, int _snakes, int _ladders) {
 
 Board::~Board() { }
 
-string Board::toString() {
-	string msg = "";
-	
+void Board::toString() {
 	for (int t = 0; t < nTiles; t++) {
-		msg += tiles[t]->toString();
-		msg += "\t";
-		if ((t+1) % 10 == 0)
-			msg += "\n";
+		cout << tiles[t]->toString() + "\t";
+		if ((t + 1) % 10 == 0)
+			cout << "\n";
 	}
-
-	return msg;
 }
 
 string Board::getTile(int pos) { 

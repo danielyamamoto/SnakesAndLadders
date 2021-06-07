@@ -11,7 +11,7 @@ Build in x64, according to VisualStudio 2019.
 Everything is used as a pointers or so I think.
 There is not a text files. That was optional.
 
-There are 7 classes with headers and sources, and the main:
+There are 8 classes with headers and sources, and the main:
 *Main is named SnakeAndLadders only contain the class Game.
 
 Every class has a constructor and destructor, private and public variables and the #define of themselves. 
@@ -35,11 +35,14 @@ Every class has a constructor and destructor, private and public variables and t
 5.- Dice class
 	Only has one method that returns a random number between 1 and 6.
 
-6.- Player class
+6.- Turn Class
+	Only has the actual turn in the game. Use a overload operator << to print the turn.
+
+7.- Player class
 	This class will be the special tile for the board and has a variables like name, position and previous position,
 	also there are methods of get and set of the variables.
 
-7.- Game class contain a vector of players, one board and a dice.
+8.- Game class contain a vector of players, one board and a dice.
 	Here, It will be the logical system of the game. 
 	
 	I created in the constructor the vector of players because it's dynamic now! You can introduce your name like a string and the game will

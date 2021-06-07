@@ -20,7 +20,7 @@ public:
 	Board(int _tiles, int _snakes, int _ladders);
 	~Board();
 
-	string toString();
+	void toString();
 	string getTile(int pos);
 	void setPlayer(int prevPos, int newPos, string type);
 	int getNumberTiles();

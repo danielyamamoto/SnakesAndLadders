@@ -21,8 +21,11 @@ public:
 
 	string toString();
 	int getNumber();
+	virtual int getBonus();
 	virtual string getType();
 	void setNumber(int _n);
+	friend ostream& operator << (ostream& out, Tile* tile);
+	int operator+(Tile& t);
 };
 
 #endif // !TILE

@@ -5,6 +5,7 @@
 #include "Board.h"
 #include "Player.h"
 #include "Dice.h"
+#include "Turn.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ class Game {
 private:
 	Board* board;
 	Dice* dice = new Dice();
+	Turn* turn = new Turn();
 	vector<Player*>players;
 
 	int reward;
@@ -24,7 +26,6 @@ private:
 	string gameType;
 
 	int playersTurn;
-	int totalTurns;
 	bool isGameover;
 
 	void Updated();
