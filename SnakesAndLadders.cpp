@@ -10,7 +10,40 @@ using namespace std;
 int main() {
 	srand(time(NULL));
 	cout << "WELCOME TO SNAKES AND LADDERS GAME" << endl;
-	Game* g = new Game();
+
+	int tiles;
+	cout << "Enter the length of tiles: ";
+	cin >> tiles;
+
+	int snakes;
+	cout << "Enter the length of snakes: ";
+	cin >> snakes;
+
+	int ladders;
+	cout << "Enter the length of ladders: ";
+	cin >> ladders;
+
+	int penalty;
+	cout << "Enter the length of penalty: ";
+	cin >> penalty;
+
+	int reward;
+	cout << "Enter the length of reward: ";
+	cin >> reward;
+
+	int players;
+	cout << "Enter the length of players: ";
+	cin >> players;
+
+	int maxTurns;
+	cout << "Enter the length of max turns: ";
+	cin >> maxTurns;
+
+	string gameType;
+	cout << "Enter A to automatically or M to Manually: ";
+	cin >> gameType;
+
+	Game* g = new Game(tiles, snakes, ladders, penalty, reward, players, maxTurns, gameType); // #Tiles, #Snakes, #Ladders, Penalty, Reward, Players, MaxTurns, GameType
 	g->Start();
 	cout << "Thanks for playing!!!" << endl;
 	return 0;

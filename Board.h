@@ -1,28 +1,29 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 #include "Tile.h"
+#include "LadderTile.h"
+#include "SnakeTile.h"
 
 using namespace std;
 
 #ifndef BOARD
 #define BOARD
-#define TILES 30
-#define SNAKES 3
-#define LADDERS 3
-#define NAME_TILE "N"
 
 class Board {
 private:
-	Tile* tiles[TILES];
+	int nTiles;
+	vector<Tile*>tiles;
 
 public:
-	Board();
+	Board(int _tiles, int _snakes, int _ladders);
 	~Board();
 
 	string toString();
 	string getTile(int pos);
 	void setPlayer(int prevPos, int newPos, string type);
+	int getNumberTiles();
 };
 
 #endif // !BOARD

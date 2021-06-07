@@ -13,7 +13,6 @@ private:
 	int pos, prevPos;
 
 public:
-	Player();
 	Player(string _name);
 	~Player();
 

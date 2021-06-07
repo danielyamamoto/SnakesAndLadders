@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 #include "Board.h"
 #include "Player.h"
 #include "Dice.h"
@@ -9,20 +10,22 @@ using namespace std;
 
 #ifndef GAME
 #define GAME
-#define MAX_TURN 20
-#define PLAYERS 2
-#define REWARD 3
-#define PENALTY 3
 
 class Game {
 private:
-	Board* board = new Board();
+	Board* board;
 	Dice* dice = new Dice();
-	Player* players[PLAYERS];
+	vector<Player*>players;
 
-	int playersTurn = 0;
-	int totalTurns = 1;
-	bool isGameover = false;
+	int reward;
+	int penalty;
+	int nPlayers;
+	int maxTurns;
+	string gameType;
+
+	int playersTurn;
+	int totalTurns;
+	bool isGameover;
 
 	void Updated();
 	void Close();
@@ -31,8 +34,9 @@ private:
 	void CheckGameOver();
 	void Continue();
 	void CheckPlayersTurns();
+
 public:
-	Game();
+	Game(int _nTiles, int _nSnakes, int _nLadders, int _penalty, int _reward, int _nPlayers, int _maxTurns, string _gameType);
 	~Game();
 
 	void Start();

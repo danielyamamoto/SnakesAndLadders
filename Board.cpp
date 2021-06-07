@@ -1,24 +1,23 @@
 #include "Board.h"
 
-Board::Board() {
-	for (int t = 1; t <= TILES; t++) {
-		tiles[t - 1] = new Tile(t, NAME_TILE);
+Board::Board(int _tiles, int _snakes, int _ladders) {
+	nTiles = _tiles;
+
+	for (int t = 0; t < nTiles; t++) {
+		tiles.push_back(new Tile(t));
 	}
 
-	for (int s = 1; s <= SNAKES; s++) {
-		int snakeRandom = rand() % TILES;
-		do {
-			snakeRandom = rand() % TILES;
-			} while (tiles[snakeRandom]->getType() == "S");
-		tiles[snakeRandom]->setType("S");
+	for (int s = 0; s < _snakes; s++) {
+		int snakeRandom = rand() % nTiles;
+		tiles[snakeRandom] = new SnakeTile(snakeRandom);
 	}
 
-	for (int l = 1; l <= LADDERS; l++) {
-		int ladderRandom = rand() % (TILES-3);
+	for (int l = 0; l < _ladders; l++) {
+		int ladderRandom = rand() % (nTiles - _ladders);
 		do {
-			ladderRandom = rand() % (TILES-3);
-		} while (tiles[ladderRandom]->getType() == "L" && tiles[ladderRandom]->getType() == "S");
-		tiles[ladderRandom]->setType("L");
+			int ladderRandom = rand() % (nTiles - _ladders);
+		} while (ladderRandom == tiles[l]->getNumber());
+		tiles[ladderRandom] = new LadderTile(ladderRandom);
 	}
 }
 
@@ -27,7 +26,7 @@ Board::~Board() { }
 string Board::toString() {
 	string msg = "";
 	
-	for (int t = 0; t < TILES; t++) {
+	for (int t = 0; t < nTiles; t++) {
 		msg += tiles[t]->toString();
 		msg += "\t";
 		if ((t+1) % 10 == 0)
@@ -42,6 +41,8 @@ string Board::getTile(int pos) {
 }
 
 void Board::setPlayer(int prevPos, int newPos, string type) { 
-	tiles[prevPos - 1]->setType(NAME_TILE);
-	tiles[newPos]->setType(type); 
+	tiles[prevPos]->setType("N");
+	tiles[newPos]->setType(type);
 }
+
+int Board::getNumberTiles() { return nTiles; }

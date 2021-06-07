@@ -1,15 +1,23 @@
 #include "Game.h"
 
-Game::Game() {
+Game::Game(int _nTiles, int _nSnakes, int _nLadders, int _penalty, int _reward, int _nPlayers, int _maxTurns, string _gameType) {
+	board = new Board(_nTiles, _nSnakes, _nLadders);
+	
+	reward = _reward;
+	penalty = _penalty;
+	nPlayers = _nPlayers;
+	maxTurns = _maxTurns;
+	gameType = _gameType;
+
 	playersTurn = 0;
 	totalTurns = 1;
 	isGameover = false;
 
-	for (int i = 0; i < PLAYERS; i++) {
+	for (int i = 0; i < nPlayers; i++) {
 		string name;
 		cout << "What's the name of the player: ";
-		getline(cin, name);
-		players[i] = new Player(name);
+		cin >> name;
+		players.push_back(new Player(name));
 	}
 }
 
@@ -21,22 +29,38 @@ void Game::Start() {
 }
 
 void Game::Updated() {
-	while (!isGameover && totalTurns <= MAX_TURN) {
-		cout << "There are only #" + to_string(MAX_TURN) + " turns" << endl;
-		cout << "Turn #" + to_string(totalTurns) << endl;
-		cout << "Is the turn of Player #" + to_string(playersTurn+1) + " " + players[playersTurn]->getName() << endl;
-		Move();
-		board->setPlayer(players[playersTurn]->getPrevPos(), players[playersTurn]->getPos() - 1, to_string(playersTurn + 1));
-		cout << board->toString() << endl;
-		CheckGameOver();
-		CheckPlayersTurns();
-		system("CLS");
+	if (gameType == "A") {
+		cout << "The simulation will run automatically" << endl;
+		while (!isGameover && totalTurns <= maxTurns) {
+			cout << "There are only #" + to_string(maxTurns) + " turns" << endl;
+			cout << "Turn #" + to_string(totalTurns) << endl;
+			cout << "Is the turn of Player #" + to_string(playersTurn+1) + " " + players[playersTurn]->getName() << endl;
+			Move();
+			board->setPlayer(players[playersTurn]->getPrevPos() - 1, players[playersTurn]->getPos() - 1, to_string(playersTurn + 1));
+			cout << board->toString() << endl;
+			CheckGameOver();
+			CheckPlayersTurns();
+			system("CLS");
+		}
+	}
+	else {
+		cout << "The simulation will run manually " << endl;
+		while (!isGameover) {
+			cout << "Turn #" + to_string(totalTurns) << endl;
+			cout << "Is the turn of Player #" + to_string(playersTurn + 1) + " " + players[playersTurn]->getName() << endl;
+			Move();
+			board->setPlayer(players[playersTurn]->getPrevPos() - 1, players[playersTurn]->getPos() - 1, to_string(playersTurn + 1));
+			cout << board->toString() << endl;
+			CheckGameOver();
+			CheckPlayersTurns();
+			system("CLS");
+		}
 	}
 }
 
 void Game::Close() {
 	cout << "GAMEOVER!" << endl;
-	if (totalTurns >= MAX_TURN)
+	if (totalTurns >= maxTurns && gameType == "A")
 		cout << "The  maximum  number  of  turns has  been reached..." << endl;
 	else 
 		cout << players[playersTurn]->getName() + " is the winner!" << endl;
@@ -50,17 +74,17 @@ void Game::Move() {
 	int tempPosPlayer = players[playersTurn]->getPos();
 	tempPosPlayer += tempMove;
 	
-	if (tempPosPlayer >= TILES) {
-		tempPosPlayer = TILES;
+	if (tempPosPlayer >= board->getNumberTiles()) {
+		tempPosPlayer = board->getNumberTiles();
 	}
 	else {
 		if (board->getTile(tempPosPlayer) == "S") {
-			tempPosPlayer -= PENALTY;
-			cout << "You found a snake, you return " + to_string(PENALTY) + " squares" << endl;
+			tempPosPlayer -= penalty;
+			cout << "You found a snake, you return " + to_string(penalty) + " squares" << endl;
 		}
 		else if (board->getTile(tempPosPlayer) == "L") {
-			tempPosPlayer += REWARD;
-			cout << "You found a ladder, you advance " + to_string(REWARD) + " boxes" << endl;
+			tempPosPlayer += reward;
+			cout << "You found a ladder, you advance " + to_string(reward) + " boxes" << endl;
 		}
 	}
 	players[playersTurn]->setPos(tempPosPlayer); 
@@ -68,7 +92,7 @@ void Game::Move() {
 }
 
 void Game::CheckGameOver() {
-	if (players[playersTurn]->getPos() >= TILES)
+	if (players[playersTurn]->getPos() >= board->getNumberTiles())
 		isGameover = true;
 	else
 		Continue();
@@ -86,8 +110,8 @@ void Game::Continue() {
 
 void Game::CheckPlayersTurns() {
 	totalTurns++;
-	if (players[playersTurn]->getPos() < TILES)
-		if (playersTurn >= PLAYERS - 1)
+	if (players[playersTurn]->getPos() < board->getNumberTiles())
+		if (playersTurn >= nPlayers - 1)
 			playersTurn = 0;
 		else
 			playersTurn++;

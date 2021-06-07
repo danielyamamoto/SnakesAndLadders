@@ -1,11 +1,5 @@
 #include "Player.h"
 
-Player::Player() { 
-	name = "???"; 
-	prevPos = 1;
-	pos = 1; 
-}
-
 Player::Player(string _name) {
 	name = _name; 
 	prevPos = 1;
